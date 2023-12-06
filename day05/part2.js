@@ -1,10 +1,5 @@
 import * as R from 'ramda';
 
-const debug = x => { 
-  debugger; 
-  return x; 
-};
-
 const toRange = (start, end) => ({ start, end });
 const readNums = R.pipe(R.split(' '), R.map(parseInt));
 const readSeeds = R.pipe(R.split(': '), R.last, readNums);
