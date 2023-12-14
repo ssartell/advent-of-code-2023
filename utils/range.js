@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import m from 'mnemonist';
 let { Queue } = m;
 
+export const toRange = (a, b) => [Math.min(a, b), Math.max(a, b)];
 export const isBelowRange = (range, x) => x < range[0];
 export const isAboveRange = (range, x) => range[1] < x;
 export const isInRange = (range, x) => range[0] <= x && x <= range[1];
