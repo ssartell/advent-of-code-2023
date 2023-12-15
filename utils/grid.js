@@ -90,4 +90,4 @@ export const indexOf = (grid, value) => {
     }
   }
   return null;
-}
+};
