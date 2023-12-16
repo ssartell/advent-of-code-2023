@@ -3,11 +3,6 @@ import { bfs } from '../utils/graph-traversal.js';
 import { add, sub, toString, rotate90, rotate270 } from '../utils/vec2.js';
 import { getValue, isInBounds } from '../utils/grid.js';
 
-const debug = x => { 
-  debugger; 
-  return x; 
-};
-
 const parseInput = R.pipe(R.split('\n'), R.map(R.split('')));
 
 const simulate = grid => {
