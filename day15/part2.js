@@ -1,10 +1,5 @@
 import * as R from 'ramda';
 
-const debug = x => { 
-  debugger; 
-  return x; 
-};
-
 const hash = R.reduce((a, c) => ((a + c.charCodeAt(0)) * 17) % 256, 0);
 const parseOp = R.pipe(R.match(/(\w+)(=|-)(\d?)/), R.tail, R.zipObj(['label', 'op', 'focal']), R.evolve({focal: parseInt}));
 const parseInput = R.pipe(R.split(','), R.map(parseOp));
