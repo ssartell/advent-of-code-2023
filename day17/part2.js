@@ -1,23 +1,16 @@
 import * as R from 'ramda';
-import { aStar, dijkstra } from '../utils/graph-traversal.js';
+import { aStar } from '../utils/graph-traversal.js';
 import { manhattan, add, sub, equals, toString } from '../utils/vec2.js';
 import { getCardinalNeighbors, getValue } from '../utils/grid.js';
 
-const debug = x => { 
-  debugger; 
-  return x; 
-};
-
 const parseInput = R.pipe(R.split('\n'), R.map(R.pipe(R.split(''), R.map(parseInt))));
-
-const allEqual = (arr, eq) => R.all(x => eq(x, arr[0]), arr)
 
 const pathFind = grid => {
   const factoryPos = {x: grid[0].length - 1, y: grid.length - 1};
   const startPos = {x: 0, y: 0};
   const minPath = aStar(
     { pos: startPos, cost: 0, dir: {x: 0, y: 0}, consecutive: 0 },
-    x => equals(x.pos, factoryPos),
+    x => equals(x.pos, factoryPos) && x.consecutive >= 4,
     x => getCardinalNeighbors(grid, x.pos)
       .map(y => {
         let dir = sub(y, x.pos);
@@ -26,16 +19,18 @@ const pathFind = grid => {
           prev: x, 
           cost: x.cost + getValue(grid, y), 
           dir: dir,
-          consecutive: equals(dir, x.dir) ? x.consecutive + 1 : 0
+          consecutive: equals(dir, x.dir) ? x.consecutive + 1 : 1
         };
       })
       .filter(y => !equals(add(x.dir, y.dir), {x: 0, y: 0}))
-      .filter(y => 4 <= y.consecutive && y.consecutive <= 10),
+      .filter(y => x.consecutive === 0
+        || (y.consecutive > x.consecutive && y.consecutive <= 10)
+        || (y.consecutive < x.consecutive && x.consecutive >= 4)),
     x => x.cost,
     x => manhattan(sub(x.pos, factoryPos)),
     x => `${toString(x.pos)}:${toString(x.dir)}:${x.consecutive}`
   );
-  //print(grid, minPath);
+  print(grid, minPath);
   return minPath.cost;
 };
 
